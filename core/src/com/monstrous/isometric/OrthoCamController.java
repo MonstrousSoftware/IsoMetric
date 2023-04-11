@@ -1,51 +1,45 @@
 package com.monstrous.isometric;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.math.Vector3;
 
 public class OrthoCamController extends InputAdapter {
 
-    public final static float MAX_ZOOM = 0.005f;
-    public final static float ZOOM_SPEED = 0.01f;
+    public final static float PAN_SPEED = 5f;
+    public final static float MAX_ZOOM = 0.1f;
+    public final static float ZOOM_SPEED = 0.5f;
 
-    private OrthographicCamera cam;
-    private ModelInstance trackedObject;
-    private Vector3 position;
-    private Vector3 prevPosition;
+    private final OrthographicCamera cam;
     private boolean zoomInPressed = false;
     private boolean zoomOutPressed = false;
+    private boolean leftPressed = false;
+    private boolean rightPressed = false;
+    private boolean forwardPressed = false;
+    private boolean backPressed = false;
 
-    public OrthoCamController(OrthographicCamera cam, final ModelInstance trackedObject) {
+    public OrthoCamController(OrthographicCamera cam) {
         this.cam = cam;
-        this.trackedObject = trackedObject;
-        position = new Vector3();
-        prevPosition = new Vector3();
-        trackedObject.transform.getTranslation(prevPosition);
+        //Gdx.app.log("cam position",cam.position.toString());
     }
 
     public void update( float deltaTime ) {
-        boolean mustUpdate = false;
-        if(zoomInPressed) {
+        if(leftPressed)
+            cam.position.x -= PAN_SPEED* deltaTime;
+        else if(rightPressed)
+            cam.position.x += PAN_SPEED* deltaTime;
+
+        if(forwardPressed)
+            cam.position.z -= PAN_SPEED* deltaTime;
+        else if(backPressed)
+            cam.position.z += PAN_SPEED* deltaTime;
+
+        if(zoomInPressed)
             zoom(ZOOM_SPEED * deltaTime);
-            mustUpdate = true;
-        }
-        else if(zoomOutPressed) {
+        else if(zoomOutPressed)
             zoom(-ZOOM_SPEED * deltaTime);
-            mustUpdate = true;
-        }
 
-        trackedObject.transform.getTranslation(position);
-        if( ! position.epsilonEquals(prevPosition )) {
-            cam.position.add(position).sub(prevPosition);
-            prevPosition.set(position);
-            mustUpdate = true;
-        }
-
-        if(mustUpdate)
+        if(leftPressed || rightPressed || forwardPressed || backPressed || zoomInPressed || zoomOutPressed )
             cam.update();
     }
 
@@ -56,12 +50,11 @@ public class OrthoCamController extends InputAdapter {
         return true;
     }
 
-    public void zoom (float amount) {
+    public void zoom(float amount) {
         cam.zoom += amount;
         if(cam.zoom < MAX_ZOOM)
             cam.zoom = MAX_ZOOM;
-
-        Gdx.app.log("zoom", ""+cam.zoom);
+        //Gdx.app.log("zoom", ""+cam.zoom);
     }
 
     @Override
@@ -81,5 +74,15 @@ public class OrthoCamController extends InputAdapter {
             zoomInPressed = state;
         else if (keycode == Input.Keys.O)
             zoomOutPressed = state;
+
+        if (keycode == Input.Keys.A)
+            leftPressed = state;
+        else if (keycode == Input.Keys.D)
+            rightPressed = state;
+
+        if (keycode == Input.Keys.W)
+            forwardPressed = state;
+        else if (keycode == Input.Keys.S)
+            backPressed = state;
     }
 }
