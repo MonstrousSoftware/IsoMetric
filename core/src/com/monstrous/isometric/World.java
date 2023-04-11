@@ -31,6 +31,7 @@ public class World implements Disposable {
         instances.add( new ModelInstance(modelBox, -5f, 0.7f,3f));
         models.add(modelBox);
 
+
 		Model modelXYZ = modelBuilder.createXYZCoordinates(5f, new Material(), VertexAttributes.Usage.Position | VertexAttributes.Usage.ColorPacked);
 		instances.add( new ModelInstance(modelXYZ,0,1,0) );
 		models.add(modelXYZ);

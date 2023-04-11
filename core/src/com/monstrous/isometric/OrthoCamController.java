@@ -20,26 +20,26 @@ public class OrthoCamController extends InputAdapter {
 
     public OrthoCamController(OrthographicCamera cam) {
         this.cam = cam;
-        //Gdx.app.log("cam position",cam.position.toString());
+
     }
 
     public void update( float deltaTime ) {
-        if(leftPressed)
-            cam.position.x -= PAN_SPEED* deltaTime;
-        else if(rightPressed)
-            cam.position.x += PAN_SPEED* deltaTime;
+        if (leftPressed)
+            cam.position.x -= PAN_SPEED * deltaTime;
+        else if (rightPressed)
+            cam.position.x += PAN_SPEED * deltaTime;
 
-        if(forwardPressed)
-            cam.position.z -= PAN_SPEED* deltaTime;
-        else if(backPressed)
-            cam.position.z += PAN_SPEED* deltaTime;
+        if (forwardPressed)
+            cam.position.z -= PAN_SPEED * deltaTime;
+        else if (backPressed)
+            cam.position.z += PAN_SPEED * deltaTime;
 
-        if(zoomInPressed)
+        if (zoomInPressed)
             zoom(ZOOM_SPEED * deltaTime);
-        else if(zoomOutPressed)
+        else if (zoomOutPressed)
             zoom(-ZOOM_SPEED * deltaTime);
 
-        if(leftPressed || rightPressed || forwardPressed || backPressed || zoomInPressed || zoomOutPressed )
+        if (leftPressed || rightPressed || forwardPressed || backPressed || zoomInPressed || zoomOutPressed)
             cam.update();
     }
 
@@ -54,7 +54,6 @@ public class OrthoCamController extends InputAdapter {
         cam.zoom += amount;
         if(cam.zoom < MAX_ZOOM)
             cam.zoom = MAX_ZOOM;
-        //Gdx.app.log("zoom", ""+cam.zoom);
     }
 
     @Override

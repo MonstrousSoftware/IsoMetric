@@ -30,10 +30,10 @@ public class Main extends ApplicationAdapter {
 	public void create () {
 		cam = new OrthographicCamera();
 
-		cam.position.set(10f, 10f, 10f);
+		cam.position.set(50f, 50f, 50f);
 		cam.lookAt(0,0,0);
-		cam.near = 1f;
-		cam.far = 30f;
+		cam.near = 10f;
+		cam.far = 200f;
 		cam.zoom = 1;
 		cam.update();
 
@@ -53,11 +53,11 @@ public class Main extends ApplicationAdapter {
 
 		world = new World();
 
+
 		modelBatch = new ModelBatch();
 
 		camController = new OrthoCamController(cam);
 		Gdx.input.setInputProcessor(camController);
-
 	}
 
 
